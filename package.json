@@ -4,7 +4,7 @@
   "description": "Mongoose uploader plugin for apollo-upload-server.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,15 @@
   "homepage": "https://github.com/zhangkaiyulw/mongoose-uploader#readme",
   "devDependencies": {
     "eslint": "^5.2.0",
-    "eslint-config-man": "^1.0.2"
+    "eslint-config-man": "^1.0.2",
+    "eslint-plugin-jest": "^21.18.0",
+    "jest": "^23.4.1",
+    "mockgoose": "^7.3.5",
+    "mongoose": "^5.2.5"
+  },
+  "dependencies": {
+    "is-plain-object": "^2.0.4",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2"
   }
 }
