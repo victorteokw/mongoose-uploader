@@ -87,3 +87,58 @@ it('uploads for files in an array', (done) => {
     done();
   });
 });
+
+
+it('uploads for nested fields', (done) => {
+  const doc = new NestedModel({
+    str: 'str val',
+    num: 2,
+    profile: {
+      avatar: new Promise(function(resolve) {
+        resolve({
+          stream: fs.createReadStream(path.join(__dirname, 'sample.jpg')),
+          filename: 'avatar.jpg',
+          mimetype: 'image/jpeg',
+          encoding: 'utf-8'
+        });
+      })
+    },
+    profile2: {
+      info: {
+        photos: [
+          new Promise(function(resolve) {
+            resolve({
+              stream: fs.createReadStream(path.join(__dirname, 'sample2.jpg')),
+              filename: 'photo1.jpg',
+              mimetype: 'image/jpeg',
+              encoding: 'utf-8'
+            });
+          }),
+          new Promise(function(resolve) {
+            resolve({
+              stream: fs.createReadStream(path.join(__dirname, 'sample3.jpg')),
+              filename: 'photo2.jpg',
+              mimetype: 'image/jpeg',
+              encoding: 'utf-8'
+            });
+          })
+        ]
+      }
+    }
+  });
+  doc.save().then((doc) => {
+    expect(doc.profile.avatar.filename).toBe('avatar.jpg');
+    expect(doc.profile.avatar.mimetype).toBe('image/jpeg');
+    expect(doc.profile.avatar.encoding).toBe('utf-8');
+    expect(doc.profile.avatar.url).toBe('www.example.com/avatar.jpg');
+    expect(doc.profile2.info.photos[0].filename).toBe('photo1.jpg');
+    expect(doc.profile2.info.photos[0].mimetype).toBe('image/jpeg');
+    expect(doc.profile2.info.photos[0].encoding).toBe('utf-8');
+    expect(doc.profile2.info.photos[0].url).toBe('www.example.com/photo1.jpg');
+    expect(doc.profile2.info.photos[1].filename).toBe('photo2.jpg');
+    expect(doc.profile2.info.photos[1].mimetype).toBe('image/jpeg');
+    expect(doc.profile2.info.photos[1].encoding).toBe('utf-8');
+    expect(doc.profile2.info.photos[1].url).toBe('www.example.com/photo2.jpg');
+    done();
+  });
+});

@@ -26,8 +26,6 @@ const uploadIfNeeded = async (schemaTree, doc, path) => {
     } else if (item.type === File) {
       if (val instanceof Promise) {
         // Do real upload
-        console.log('log path');
-        console.log(path.concat(key));
         set(doc, path.concat(key), await item.uploader.upload(val));
       } else {
         // Do nothing
