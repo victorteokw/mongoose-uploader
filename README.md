@@ -58,6 +58,12 @@ const ImageUploader = createAliOSSUploader({
 module.exports = ImageUploader;
 ```
 
+# Base Uploaders
+
+* [AmazonS3Uploader](https://github.com/zhangkaiyulw/mongoose-uploader-amazon-s3)
+* [AliOSSUploader](https://github.com/zhangkaiyulw/mongoose-uploader-ali-oss)
+
+
 [travis-image]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader.svg?branch=master
 [travis-url]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader
 [npm-image]: https://badge.fury.io/js/mongoose-uploader.svg
