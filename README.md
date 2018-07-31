@@ -58,11 +58,18 @@ const ImageUploader = createAliOSSUploader({
 module.exports = ImageUploader;
 ```
 
-# Base Uploaders
+## Base Uploaders
 
 * [AmazonS3Uploader](https://github.com/zhangkaiyulw/mongoose-uploader-amazon-s3)
 * [AliOSSUploader](https://github.com/zhangkaiyulw/mongoose-uploader-ali-oss)
 
+# Changelog
+
+- Version 0.0.1 (2018-07-27)
+  - Auto upload when a document is saving to database
+- Version 0.0.2 (2018-07-31)
+  - Auto remove uploads when a document is removed
+  - Auto remove uploads when a field is assigned a new value
 
 [travis-image]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader.svg?branch=master
 [travis-url]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader
