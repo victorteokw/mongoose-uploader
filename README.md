@@ -1,5 +1,7 @@
 # mongoose-uploader
 [![Build Status][travis-image]][travis-url]
+[![NPM version][npm-image]][npm-url]
+[![Dependency Status][daviddm-image]][daviddm-url]
 
 Mongoose uploader plugin for apollo-upload-server.
 
@@ -58,3 +60,7 @@ module.exports = ImageUploader;
 
 [travis-image]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader.svg?branch=master
 [travis-url]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader
+[npm-image]: https://badge.fury.io/js/mongoose-uploader.svg
+[npm-url]: https://npmjs.org/package/mongoose-uploader
+[daviddm-image]: https://david-dm.org/zhangkaiyulw/mongoose-uploader.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/zhangkaiyulw/mongoose-uploader
