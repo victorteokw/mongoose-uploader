@@ -10,7 +10,9 @@ const fs = require('fs');
 const path = require('path');
 
 beforeAll(function(done) {
-  fs.mkdirSync(path.join(__dirname, 'uploads'));
+  if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
+    fs.mkdirSync(path.join(__dirname, 'uploads'));
+  }
   mockgoose.prepareStorage().then(function() {
     mongoose.connect('mongodb://example.com/testing', function(err) {
       done(err);
@@ -238,6 +240,28 @@ it('updates for files in an array', (done) => {
       expect(fs.existsSync(path.join(__dirname, 'uploads', 'b2.jpg'))).toBe(false);
       expect(fs.existsSync(path.join(__dirname, 'uploads', 'b3.jpg'))).toBe(true);
       expect(fs.existsSync(path.join(__dirname, 'uploads', 'b4.jpg'))).toBe(true);
+      done();
+    });
+  });
+});
+
+it('remove file when removing', (done) => {
+  const doc = new Simple({
+    str: 'str val',
+    num: 2,
+    file: new Promise(function(resolve) {
+      resolve({
+        stream: fs.createReadStream(path.join(__dirname, 'sample.jpg')),
+        filename: 'to-be-removed.jpg',
+        mimetype: 'image/jpeg',
+        encoding: 'utf-8'
+      });
+    })
+  });
+  doc.save().then((doc) => {
+    expect(fs.existsSync(path.join(__dirname, 'uploads', 'to-be-removed.jpg'))).toBe(true);
+    doc.remove().then((doc) => {
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'to-be-removed.jpg'))).toBe(false);
       done();
     });
   });
