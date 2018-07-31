@@ -1,4 +1,5 @@
 # mongoose-uploader
+[![Build Status][travis-image]][travis-url]
 
 Mongoose uploader plugin for apollo-upload-server.
 
@@ -54,3 +55,6 @@ const ImageUploader = createAliOSSUploader({
 
 module.exports = ImageUploader;
 ```
+
+[travis-image]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader.svg?branch=master
+[travis-url]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader
