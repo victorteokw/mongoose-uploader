@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 beforeAll(function(done) {
+  fs.mkdirSync(path.join(__dirname, 'uploads'));
   mockgoose.prepareStorage().then(function() {
     mongoose.connect('mongodb://example.com/testing', function(err) {
       done(err);
@@ -173,6 +174,70 @@ it('updates for simple model, removes old file', (done) => {
       expect(doc.file.encoding).toBe('utf-8');
       expect(doc.file.url).toBe('www.example.com/upload2.jpg');
       expect(fs.existsSync(path.join(__dirname, 'uploads', 'upload1.jpg'))).toBe(false);
+      done();
+    });
+  });
+});
+
+it('updates for files in an array', (done) => {
+  const doc = new ArrayModel({
+    str: 'str val',
+    num: 2,
+    files: [
+      new Promise(function(resolve) {
+        resolve({
+          stream: fs.createReadStream(path.join(__dirname, 'sample.jpg')),
+          filename: 'b1.jpg',
+          mimetype: 'image/jpeg',
+          encoding: 'utf-8'
+        });
+      }),
+      new Promise(function(resolve) {
+        resolve({
+          stream: fs.createReadStream(path.join(__dirname, 'sample2.jpg')),
+          filename: 'b2.jpg',
+          mimetype: 'image/jpeg',
+          encoding: 'utf-8'
+        });
+      })
+    ]
+  });
+  doc.save().then((doc) => {
+    doc.set({
+      files: [
+        new Promise(function(resolve) {
+          resolve({
+            stream: fs.createReadStream(path.join(__dirname, 'sample.jpg')),
+            filename: 'b3.jpg',
+            mimetype: 'image/jpeg',
+            encoding: 'utf-8'
+          });
+        }),
+        new Promise(function(resolve) {
+          resolve({
+            stream: fs.createReadStream(path.join(__dirname, 'sample2.jpg')),
+            filename: 'b4.jpg',
+            mimetype: 'image/jpeg',
+            encoding: 'utf-8'
+          });
+        })
+      ]
+    });
+    expect(fs.existsSync(path.join(__dirname, 'uploads', 'b1.jpg'))).toBe(true);
+    expect(fs.existsSync(path.join(__dirname, 'uploads', 'b2.jpg'))).toBe(true);
+    doc.save().then((doc) => {
+      expect(doc.files[0].filename).toBe('b3.jpg');
+      expect(doc.files[0].mimetype).toBe('image/jpeg');
+      expect(doc.files[0].encoding).toBe('utf-8');
+      expect(doc.files[0].url).toBe('www.example.com/b3.jpg');
+      expect(doc.files[1].filename).toBe('b4.jpg');
+      expect(doc.files[1].mimetype).toBe('image/jpeg');
+      expect(doc.files[1].encoding).toBe('utf-8');
+      expect(doc.files[1].url).toBe('www.example.com/b4.jpg');
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'b1.jpg'))).toBe(false);
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'b2.jpg'))).toBe(false);
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'b3.jpg'))).toBe(true);
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'b4.jpg'))).toBe(true);
       done();
     });
   });
