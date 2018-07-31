@@ -10,7 +10,7 @@ module.exports = {
     stream.pipe(writable);
     return { filename, mimetype, encoding, url: 'www.example.com/' + filename };
   },
-  remove: async () => {
-
+  remove: async (file) => {
+    fs.unlinkSync(path.join(__dirname, '../uploads', file.filename));
   }
 };

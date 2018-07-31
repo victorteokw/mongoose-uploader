@@ -141,3 +141,39 @@ it('uploads for nested fields', (done) => {
     done();
   });
 });
+
+it('updates for simple model, removes old file', (done) => {
+  const doc = new Simple({
+    str: 'str val',
+    num: 2,
+    file: new Promise(function(resolve) {
+      resolve({
+        stream: fs.createReadStream(path.join(__dirname, 'sample.jpg')),
+        filename: 'upload1.jpg',
+        mimetype: 'image/jpeg',
+        encoding: 'utf-8'
+      });
+    })
+  });
+  doc.save().then((doc) => {
+    expect(fs.existsSync(path.join(__dirname, 'uploads', 'upload1.jpg'))).toBe(true);
+    doc.set({
+      file: new Promise(function(resolve) {
+        resolve({
+          stream: fs.createReadStream(path.join(__dirname, 'sample2.jpg')),
+          filename: 'upload2.jpg',
+          mimetype: 'image/jpeg',
+          encoding: 'utf-8'
+        });
+      })
+    });
+    doc.save().then((doc) => {
+      expect(doc.file.filename).toBe('upload2.jpg');
+      expect(doc.file.mimetype).toBe('image/jpeg');
+      expect(doc.file.encoding).toBe('utf-8');
+      expect(doc.file.url).toBe('www.example.com/upload2.jpg');
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'upload1.jpg'))).toBe(false);
+      done();
+    });
+  });
+});
