@@ -75,7 +75,6 @@ it('uploads for files in an array', (done) => {
     ]
   });
   doc.save().then((doc) => {
-    console.log(doc.files);
     expect(doc.files[0].filename).toBe('a1.jpg');
     expect(doc.files[0].mimetype).toBe('image/jpeg');
     expect(doc.files[0].encoding).toBe('utf-8');
