@@ -70,6 +70,9 @@ module.exports = ImageUploader;
 - Version 0.0.2 (2018-07-31)
   - Auto remove uploads when a document is removed
   - Auto remove uploads when a field is assigned a new value
+- Version 0.0.3 (2018-08-01)
+  - Random filename
+  - Base uploader that provides random filename feature
 
 [travis-image]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader.svg?branch=master
 [travis-url]: https://travis-ci.org/zhangkaiyulw/mongoose-uploader
