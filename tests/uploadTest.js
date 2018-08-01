@@ -266,3 +266,25 @@ it('remove file when removing', (done) => {
     });
   });
 });
+
+it('remove file when setting to null', (done) => {
+  const doc = new Simple({
+    str: 'str val',
+    num: 2,
+    file: new Promise(function(resolve) {
+      resolve({
+        stream: fs.createReadStream(path.join(__dirname, 'sample.jpg')),
+        filename: 'null.jpg',
+        mimetype: 'image/jpeg',
+        encoding: 'utf-8'
+      });
+    })
+  });
+  doc.save().then((doc) => {
+    expect(fs.existsSync(path.join(__dirname, 'uploads', 'null.jpg'))).toBe(true);
+    doc.set({file: null}).save().then((doc) => {
+      expect(fs.existsSync(path.join(__dirname, 'uploads', 'null.jpg'))).toBe(false);
+      done();
+    });
+  });
+});
